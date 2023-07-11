@@ -1,73 +1,76 @@
-# Nuxt Layer Starter
+# HeadingX
 
-Create Nuxt extendable layer with this GitHub template.
+Vue components for making headings and heading scopes for inserting the right tags and levels. The general concept is to be able to make components agnostic towards their nesting levels and use the right headings no matter where they are placed.
 
-## Setup
+## Installation
 
-Make sure to install the dependencies:
-
-```bash
-pnpm install
+``` bash
+yarn add @limbo-works/heading-x
 ```
 
-## Working on your theme
+## Using the components
 
-Your theme is at the root of this repository, it is exactly like a regular Nuxt project, except you can publish it on NPM.
+Make the component globally usable by extending the layer in `nuxt.config.js`.
 
-The `.playground` directory should help you on trying your theme during development.
-
-Running `pnpm dev` will prepare and boot `.playground` directory, which imports your theme itself.
-
-## Distributing your theme
-
-Your Nuxt layer is shaped exactly the same as any other Nuxt project, except you can publish it on NPM.
-
-To do so, you only have to check if `files` in `package.json` are valid, then run:
-
-```bash
-npm publish --access public
-```
-
-Once done, your users will only have to run:
-
-```bash
-npm install --save your-theme
-```
-
-Then add the dependency to their `extends` in `nuxt.config`:
-
-```ts
-defineNuxtConfig({
-	extends: 'your-theme',
+``` js
+export default defineNuxtConfig({
+    extends: [
+        '@limbo-works/heading-x',
+        ...
+    ],
+    ...
 });
 ```
 
-## Development Server
+Then you can use the HeadingX and `HeadingScope` components anywhere within that solution:
 
-Start the development server on http://localhost:3000
+``` html
+<!-- As written in Vue -->
+<HeadingX>Hello World</HeadingX>
+<HeadingScope tag="article">
+	<p>
+		Once upon a time, we said hello to the world.
+	</p>
 
-```bash
-pnpm dev
+	<HeadingX>But then...</HeadingX>
+	<HeadingScope level="4">
+		<p>
+			...we said hello to the world again.
+		</p>
+
+		<HeadingX level="1">And again...</HeadingX>
+		<HeadingScope level="-1">
+			<p>...and again.</p>
+		</HeadingScope>
+	</HeadingScope>
+</HeadingScope>
+
+<!-- As it may appear in the dom -->
+<h1>Hello World</h1>
+<article>
+	<p> Once upon a time, we said hello to the world.</p>
+	<h2>But then...</h2>
+	<p> ...we said hello to the world again.</p>
+	<h1>And again...</h1>
+	<p>...and again.</p>
+</article>
 ```
 
-## Production
+### Props overview
 
-Build the application for production:
+The same props are available for both `HeadingX` and `HeadingScope`.
 
-```bash
-pnpm build
-```
+| Prop | Description | Default value | Data type |
+| ---- | ----------- | ------------- | --------- |
+| tag | Per default, `HeadingX` will be rendered with the `h`-tag fitting its calculated heading level. If a tag is supplied it will be used instead. If it's a `h`-tag it will be used as-is, but any other tag will be supplied with role="heading" and a fitting aria-level.<br><br>HeadingScope will be tagless by default and will just render its content directly, but if a tag is supplied it will be used. | undefined | String |
+| level | Setting the level for `HeadingX` will directly set the heading level, ie. a level of 1 will be `h1`, 2 `h2`, and so on. If not defined it will be calculated based on the upper `HeadingScope`s.<br><br>Setting a level for `HeadingScope` will set the heading scope level, ie. setting a level of 1, will make nested `HeadingX`s render as `h2`s (ie., the next headings after a `h1`), and so on. If not defined it will be calculated based on the upper `HeadingScope`s.<br><br>For both components you may prefix your number with "+" or "-" to set the value relatively to the calculated level. A value of "+1" on a `HeadingX` that would normally become a `h2` will, for example, become a `h3` instead. | undefined | Number\|String |
 
-Or statically generate it with:
+### Exposed slot props
 
-```bash
-pnpm generate
-```
+Slot props only goes for `HeadingScope`.
 
-Locally preview production build:
+| Prop | Description |
+| ---- | ----------- |
+| headingScopeLevel | Number representing the current scope. |
 
-```bash
-pnpm preview
-```
-
-Checkout the [deployment documentation](https://v3.nuxtjs.org/docs/deployment) for more information.
+The same value is also provided by `HeadingScope` and can be used like: `const headingScopeLevel = inject('headingScopeLevel', 1);`
