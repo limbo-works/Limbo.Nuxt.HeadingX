@@ -16,40 +16,41 @@ export default {
 			default: undefined,
 		},
 	},
-	computed: {
-		computedLevel() {
-			if (this.level || typeof this.level === 'number') {
+	setup(props, { attrs, slots }) {
+		const headingScopeLevel = inject('headingScopeLevel', 1);
+
+		const level = computed(() => {
+			if (props.level || typeof props.level === 'number') {
 				// Add one to headingScopeLevel
-				if (typeof this.level === 'string' && this.level.startsWith('+')) {
-					return Number(this.level.substr(1)) + this.headingScopeLevel;
+				if (typeof props.level === 'string' && props.level.startsWith('+')) {
+					return Number(props.level.substr(1)) + headingScopeLevel;
 				}
 				// Subtract one from headingScopeLevel
-				if (typeof this.level === 'string' && this.level.startsWith('-')) {
-					return this.headingScopeLevel - Number(this.level.substr(1));
+				if (typeof props.level === 'string' && props.level.startsWith('-')) {
+					return headingScopeLevel - Number(props.level.substr(1));
 				}
 				// Plain level
-				return Number(this.level);
+				return Number(props.level);
 			}
-			return this.headingScopeLevel;
-		},
-		computedTag() {
-			if (this.tag) {
-				return this.tag;
+			return headingScopeLevel;
+		});
+		const tag = computed(() => {
+			if (props.tag) {
+				return props.tag;
 			}
-			if (this.computedLevel >= 1 && this.computedLevel <= 6) {
-				return `h${this.computedLevel}`;
+			if (level.value >= 1 && level.value <= 6) {
+				return `h${level.value}`;
 			}
 			return 'div';
-		},
-	},
-	render() {
-		const isRealHeading = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(this.computedTag);
+		});
 
-		return h(this.computedTag, {
+		const isRealHeading = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(tag.value);
+
+		return () => h(tag.value, {
 			role: isRealHeading ? null : 'heading',
-			'aria-level': isRealHeading ? null : level,
-			...this.$attrs,
-		}, this.$slots.default?.());
+			'aria-level': isRealHeading ? null : level.value,
+			...attrs,
+		}, slots.default?.());
 	},
 };
 </script>
