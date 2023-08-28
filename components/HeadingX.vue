@@ -1,15 +1,26 @@
 <!--
-	Last modified: 2023/08/28 13:49:30
+	Last modified: 2023/08/28 14:21:18
 -->
 <template>
 	<Component
 		:is="tag"
+		v-if="innerHTML"
 		:role="isRealHeading ? null : 'heading'"
 		:aria-level="isRealHeading ? null : level"
-		v-bind="{
-			innerHTML,
-			textContent,
-		}"
+		v-html="innerHTML"
+	/>
+	<Component
+		:is="tag"
+		v-else-if="textContent"
+		:role="isRealHeading ? null : 'heading'"
+		:aria-level="isRealHeading ? null : level"
+		v-text="textContent"
+	/>
+	<Component
+		:is="tag"
+		v-else
+		:role="isRealHeading ? null : 'heading'"
+		:aria-level="isRealHeading ? null : level"
 	>
 		<slot></slot>
 	</Component>
