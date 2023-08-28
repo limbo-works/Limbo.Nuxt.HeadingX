@@ -1,16 +1,7 @@
 <template>
 	<Component
-		:is="tag" v-if="tag && innerHTML"
-		v-bind="$attrs"
-		v-html="innerHTML"
-	/>
-	<Component
-		:is="tag" v-else-if="tag && textContent"
-		v-bind="$attrs"
-		v-text="textContent"
-	/>
-	<Component
-		:is="tag" v-else-if="tag"
+		:is="tag"
+		v-if="tag"
 		v-bind="$attrs"
 	>
 		<slot :heading-scope-level="level"></slot>
@@ -30,9 +21,6 @@ const props = defineProps({
 		type: [Number, String],
 		default: undefined,
 	},
-	// For v-html and v-text to work...
-	textContent: String,
-	innerHTML: String,
 });
 
 const level = computed(() => {
