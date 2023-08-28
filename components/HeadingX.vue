@@ -1,11 +1,15 @@
 <!--
-	Last modified: 2023/07/11 14:59:36
+	Last modified: 2023/08/28 13:49:30
 -->
 <template>
 	<Component
 		:is="tag"
 		:role="isRealHeading ? null : 'heading'"
 		:aria-level="isRealHeading ? null : level"
+		v-bind="{
+			innerHTML,
+			textContent,
+		}"
 	>
 		<slot></slot>
 	</Component>
@@ -23,6 +27,9 @@ const props = defineProps({
 		type: [Number, String],
 		default: undefined,
 	},
+	// For v-html and v-text to work...
+	textContent: String,
+	innerHTML: String,
 });
 
 const level = computed(() => {
