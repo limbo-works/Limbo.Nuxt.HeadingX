@@ -1,5 +1,8 @@
 <template>
-	<Component :is="tag" v-if="tag">
+	<Component
+		:is="tag" v-if="tag"
+		v-bind="$attrs"
+	>
 		<slot :heading-scope-level="level"></slot>
 	</Component>
 	<slot v-else :heading-scope-level="level"></slot>
