@@ -15,6 +15,10 @@ export default {
 			type: [Number, String],
 			default: undefined,
 		},
+		html: {
+			type: String,
+			default: undefined,
+		},
 	},
 	setup(props, { attrs, slots }) {
 		const headingScopeLevel = inject('headingScopeLevel', 1);
@@ -47,18 +51,19 @@ export default {
 		const isRealHeading = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(tag.value);
 
 		return () => {
-			if (attrs.innerHTML || attrs.textContent) {
+			if (props.html) {
 				return h(tag.value, {
 					role: isRealHeading ? null : 'heading',
 					'aria-level': isRealHeading ? null : level.value,
 					...attrs,
+					innerHTML: props.html,
 				});
 			}
 			return h(tag.value, {
 				role: isRealHeading ? null : 'heading',
 				'aria-level': isRealHeading ? null : level.value,
 				...attrs,
-			}, slots.default?.());
+			}, attrs.textContent || slots.default?.());
 		};
 	},
 };

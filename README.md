@@ -64,6 +64,7 @@ The same props are available for both `HeadingX` and `HeadingScope`.
 | ---- | ----------- | ------------- | --------- |
 | tag | Per default, `HeadingX` will be rendered with the `h`-tag fitting its calculated heading level. If a tag is supplied it will be used instead. If it's a `h`-tag it will be used as-is, but any other tag will be supplied with role="heading" and a fitting aria-level.<br><br>HeadingScope will be tagless by default and will just render its content directly, but if a tag is supplied it will be used. | undefined | String |
 | level | Setting the level for `HeadingX` will directly set the heading level, ie. a level of 1 will be `h1`, 2 `h2`, and so on. If not defined it will be calculated based on the upper `HeadingScope`s.<br><br>Setting a level for `HeadingScope` will set the heading scope level, ie. setting a level of 1, will make nested `HeadingX`s render as `h2`s (ie., the next headings after a `h1`), and so on. If not defined it will be calculated based on the upper `HeadingScope`s.<br><br>For both components you may prefix your number with "+" or "-" to set the value relatively to the calculated level. A value of "+1" on a `HeadingX` that would normally become a `h2` will, for example, become a `h3` instead. | undefined | Number\|String |
+| html | Due to [a bug with Vue3](https://github.com/vuejs/core/issues/6435) using `v-html` on an element that's using `<Component :is>` doesn't work, so instead we have a `html` prop for the same functionality. | undefined | String |
 
 ### Exposed slot props
 

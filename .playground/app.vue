@@ -11,9 +11,9 @@
 				...we said hello to the world again.
 			</p>
 
-			<HeadingX level="1" v-html="'And again...!'" />
+			<HeadingX level="1" html="And again...!" />
 			<HeadingScope level="-2">
-				<HeadingX v-html="'And lastly...'" />
+				<HeadingX v-text="'And lastly...'" />
 				<p>...and again.</p>
 			</HeadingScope>
 		</HeadingScope>
