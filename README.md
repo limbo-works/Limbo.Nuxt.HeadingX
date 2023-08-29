@@ -4,7 +4,7 @@ Vue components for making headings and heading scopes for inserting the right ta
 
 ## Installation
 
-```bash
+``` bash
 yarn add @limbo-works/heading-x
 ```
 
@@ -12,7 +12,7 @@ yarn add @limbo-works/heading-x
 
 Make the component globally usable by extending the layer in `nuxt.config.js`.
 
-```js
+``` js
 export default defineNuxtConfig({
     extends: [
         '@limbo-works/heading-x',
@@ -24,7 +24,7 @@ export default defineNuxtConfig({
 
 Then you can use the HeadingX and `HeadingScope` components anywhere within that solution:
 
-```html
+``` html
 <!-- As written in Vue -->
 <HeadingX>Hello World</HeadingX>
 <HeadingScope tag="article">
@@ -52,23 +52,23 @@ Then you can use the HeadingX and `HeadingScope` components anywhere within that
 </article>
 ```
 
+**DON'T USE V-HTML OR V-TEXT!** Due to [a bug in Vue3](https://github.com/vuejs/core/issues/6435), these directives doesn't work properly in a SSR context when using dynamic components. If you need to use html, add a span inside and use it on that.
+
 ### Props overview
 
 The same props are available for both `HeadingX` and `HeadingScope`.
 
-| Prop  | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Default value | Data type      |
-| ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | -------------- |
-| tag   | Per default, `HeadingX` will be rendered with the `h`-tag fitting its calculated heading level. If a tag is supplied it will be used instead. If it's a `h`-tag it will be used as-is, but any other tag will be supplied with role="heading" and a fitting aria-level.<br><br>HeadingScope will be tagless by default and will just render its content directly, but if a tag is supplied it will be used.                                                                                                                                                                                                                                                                                                           | undefined     | String         |
-| level | Setting the level for `HeadingX` will directly set the heading level, ie. a level of 1 will be `h1`, 2 `h2`, and so on. If not defined it will be calculated based on the upper `HeadingScope`s.<br><br>Setting a level for `HeadingScope` will set the heading scope level, ie. setting a level of 1, will make nested `HeadingX`s render as `h2`s (ie., the next headings after a `h1`), and so on. If not defined it will be calculated based on the upper `HeadingScope`s.<br><br>For both components you may prefix your number with "+" or "-" to set the value relatively to the calculated level. A value of "+1" on a `HeadingX` that would normally become a `h2` will, for example, become a `h3` instead. | undefined     | Number\|String |
-| html  | Due to [a bug with Vue3](https://github.com/vuejs/core/issues/6435) using `v-html` on an element that's using `<Component :is>` doesn't work, so instead we have a `html` prop for the same functionality. Shouldn't be used at the same time as the `text` prop or a slot.                                                                                                                                                                                                                                                                                                                                                                                                                                           | undefined     | String         |
-| text  | Due to [a bug with Vue3](https://github.com/vuejs/core/issues/6435) using `v-text` on an element that's using `<Component :is>` doesn't work, so instead we have a `text` prop for the same functionality. Shouldn't be used at the same time as the html `prop` or a slot.                                                                                                                                                                                                                                                                                                                                                                                                                                           |               |                |
+| Prop | Description | Default value | Data type |
+| ---- | ----------- | ------------- | --------- |
+| tag | Per default, `HeadingX` will be rendered with the `h`-tag fitting its calculated heading level. If a tag is supplied it will be used instead. If it's a `h`-tag it will be used as-is, but any other tag will be supplied with role="heading" and a fitting aria-level.<br><br>HeadingScope will be tagless by default and will just render its content directly, but if a tag is supplied it will be used. | undefined | String |
+| level | Setting the level for `HeadingX` will directly set the heading level, ie. a level of 1 will be `h1`, 2 `h2`, and so on. If not defined it will be calculated based on the upper `HeadingScope`s.<br><br>Setting a level for `HeadingScope` will set the heading scope level, ie. setting a level of 1, will make nested `HeadingX`s render as `h2`s (ie., the next headings after a `h1`), and so on. If not defined it will be calculated based on the upper `HeadingScope`s.<br><br>For both components you may prefix your number with "+" or "-" to set the value relatively to the calculated level. A value of "+1" on a `HeadingX` that would normally become a `h2` will, for example, become a `h3` instead. | undefined | Number\|String |
 
 ### Exposed slot props
 
 Slot props only goes for `HeadingScope`.
 
-| Prop              | Description                            |
-| ----------------- | -------------------------------------- |
+| Prop | Description |
+| ---- | ----------- |
 | headingScopeLevel | Number representing the current scope. |
 
 The same value is also provided by `HeadingScope` and can be used like: `const headingScopeLevel = inject('headingScopeLevel', 1);`

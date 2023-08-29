@@ -66,15 +66,7 @@ export default {
 					role: this.isRealHeading ? null : 'heading',
 					'aria-level': this.isRealHeading ? null : this.computedLevel,
 					...this.$attrs,
-					innerHTML: null,
-					innerText: null,
 				},
-				this.$attrs.innerHTML ? h(
-					'span',
-					{
-						innerHTML: this.$attrs.innerHTML,
-					},
-				) : this.$attrs.innerText,
 			);
 		}
 		return h(
