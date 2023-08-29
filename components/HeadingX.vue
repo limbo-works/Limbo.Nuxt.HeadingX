@@ -19,6 +19,10 @@ export default {
 			type: String,
 			default: undefined,
 		},
+		text: {
+			type: String,
+			default: undefined,
+		},
 	},
 	setup(props, { attrs, slots }) {
 		const headingScopeLevel = inject('headingScopeLevel', 1);
@@ -51,19 +55,20 @@ export default {
 		const isRealHeading = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(tag.value);
 
 		return () => {
-			if (props.html) {
+			if (props.html || props.text) {
 				return h(tag.value, {
 					role: isRealHeading ? null : 'heading',
 					'aria-level': isRealHeading ? null : level.value,
 					...attrs,
 					innerHTML: props.html,
+					textContent: props.text,
 				});
 			}
 			return h(tag.value, {
 				role: isRealHeading ? null : 'heading',
 				'aria-level': isRealHeading ? null : level.value,
 				...attrs,
-			}, attrs.textContent || slots.default?.());
+			}, slots.default?.());
 		};
 	},
 };
