@@ -16,19 +16,6 @@ export default {
 			type: [Number, String],
 			default: undefined,
 		},
-		html: {
-			type: String,
-			default: undefined,
-		},
-		text: {
-			type: String,
-			default: undefined,
-		},
-	},
-	data() {
-		return {
-			hasMounted: false,
-		};
 	},
 	computed: {
 		computedLevel() {
@@ -71,21 +58,24 @@ export default {
 			);
 		},
 	},
-	mounted() {
-		this.$nextTick(() => {
-			this.hasMounted = true;
-		});
-	},
 	render() {
-		if (this.html || this.text) {
-			return h(this.computedTag, {
-				role: this.isRealHeading ? null : 'heading',
-				'aria-level': this.isRealHeading ? null : this.computedLevel,
-				...this.$attrs,
-				innerHTML: this.html,
-				textContent: this.text,
-				'data-first-load': this.hasMounted ? null : true,
-			});
+		if (this.$attrs.innerHTML || this.$attrs.innerText) {
+			return h(
+				this.computedTag,
+				{
+					role: this.isRealHeading ? null : 'heading',
+					'aria-level': this.isRealHeading ? null : this.computedLevel,
+					...this.$attrs,
+					innerHTML: null,
+					innerText: null,
+				},
+				this.$attrs.innerHTML ? h(
+					'span',
+					{
+						innerHTML: this.$attrs.innerHTML,
+					},
+				) : this.$attrs.innerText,
+			);
 		}
 		return h(
 			this.computedTag,

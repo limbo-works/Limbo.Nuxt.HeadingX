@@ -7,9 +7,9 @@
 		<HeadingScope level="4">
 			<p>...we said hello to the world again.</p>
 
-			<HeadingX level="1" html="And again...!" />
+			<HeadingX level="1" v-html="'And again...!'" />
 			<HeadingScope level="-2">
-				<HeadingX :text="'And lastly...'" />
+				<HeadingX v-text="'And lastly...'" />
 				<p>...and again.</p>
 			</HeadingScope>
 		</HeadingScope>
