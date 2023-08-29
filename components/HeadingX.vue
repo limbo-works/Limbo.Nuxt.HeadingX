@@ -19,28 +19,27 @@ export default {
 			default: undefined,
 		},
 	},
-	setup(props, ctx) {
-		const { attrs, slots } = ctx;
+	render() {
 		const headingScopeLevel = inject('headingScopeLevel', 1);
 
 		const level = computed(() => {
-			if (props.level || typeof props.level === 'number') {
+			if (this.level || typeof this.level === 'number') {
 				// Add one to headingScopeLevel
-				if (typeof props.level === 'string' && props.level.startsWith('+')) {
-					return Number(props.level.substr(1)) + headingScopeLevel;
+				if (typeof this.level === 'string' && this.level.startsWith('+')) {
+					return Number(this.level.substr(1)) + headingScopeLevel;
 				}
 				// Subtract one from headingScopeLevel
-				if (typeof props.level === 'string' && props.level.startsWith('-')) {
-					return headingScopeLevel - Number(props.level.substr(1));
+				if (typeof this.level === 'string' && this.level.startsWith('-')) {
+					return headingScopeLevel - Number(this.level.substr(1));
 				}
 				// Plain level
-				return Number(props.level);
+				return Number(this.level);
 			}
 			return headingScopeLevel;
 		});
 		const tag = computed(() => {
-			if (props.tag) {
-				return props.tag;
+			if (this.tag) {
+				return this.tag;
 			}
 			if (level.value >= 1 && level.value <= 6) {
 				return `h${level.value}`;
@@ -50,22 +49,20 @@ export default {
 
 		const isRealHeading = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(tag.value);
 
-		return () => {
-			if (props.html || props.text) {
-				return h(tag.value, {
-					role: isRealHeading ? null : 'heading',
-					'aria-level': isRealHeading ? null : level.value,
-					...attrs,
-					innerHTML: props.html,
-					textContent: props.text,
-				});
-			}
+		if (this.html || this.text) {
 			return h(tag.value, {
 				role: isRealHeading ? null : 'heading',
 				'aria-level': isRealHeading ? null : level.value,
-				...attrs,
-			}, slots.default?.());
-		};
+				...this.$attrs,
+				innerHTML: this.html,
+				textContent: this.text,
+			});
+		}
+		return h(tag.value, {
+			role: isRealHeading ? null : 'heading',
+			'aria-level': isRealHeading ? null : level.value,
+			...this.$attrs,
+		}, this.$slots.default?.());
 	},
 };
 </script>

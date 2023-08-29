@@ -13,7 +13,7 @@
 
 			<HeadingX level="1" html="And again...!" />
 			<HeadingScope level="-2">
-				<HeadingX v-text="'And lastly...'" />
+				<HeadingX :text="'And lastly...'" />
 				<p>...and again.</p>
 			</HeadingScope>
 		</HeadingScope>
