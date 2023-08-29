@@ -27,8 +27,7 @@ export default {
 	},
 	data() {
 		return {
-			internalHtml: '',
-			internalText: '',
+			hasMounted: false,
 		};
 	},
 	computed: {
@@ -72,23 +71,10 @@ export default {
 			);
 		},
 	},
-	// All this may seem a bit overkill, but it's necessary to make sure v-html and v-text work
-	watch: {
-		html() {
-			this.updateInternalValues();
-		},
-		text() {
-			this.updateInternalValues();
-		},
-	},
 	mounted() {
-		this.updateInternalValues();
-	},
-	methods: {
-		updateInternalValues() {
-			this.internalHtml = this.html;
-			this.internalText = this.text;
-		},
+		this.$nextTick(() => {
+			this.hasMounted = true;
+		});
 	},
 	render() {
 		if (this.html || this.text) {
@@ -96,8 +82,9 @@ export default {
 				role: this.isRealHeading ? null : 'heading',
 				'aria-level': this.isRealHeading ? null : this.computedLevel,
 				...this.$attrs,
-				innerHTML: this.internalHtml || this.html,
-				textContent: this.internalText || this.text,
+				innerHTML: this.html,
+				textContent: this.text,
+				'data-first-load': this.hasMounted ? null : true,
 			});
 		}
 		return h(
