@@ -1,11 +1,6 @@
 <script>
 export default {
 	name: 'HeadingX',
-	inject: {
-		headingScopeLevel: {
-			default: 1,
-		},
-	},
 	props: {
 		tag: {
 			type: String,
@@ -24,7 +19,8 @@ export default {
 			default: undefined,
 		},
 	},
-	setup(props, { attrs, slots }) {
+	setup(props, ctx) {
+		const { attrs, slots } = ctx;
 		const headingScopeLevel = inject('headingScopeLevel', 1);
 
 		const level = computed(() => {
