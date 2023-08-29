@@ -46,11 +46,20 @@ export default {
 
 		const isRealHeading = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(tag.value);
 
-		return () => h(tag.value, {
-			role: isRealHeading ? null : 'heading',
-			'aria-level': isRealHeading ? null : level.value,
-			...attrs,
-		}, slots.default?.());
+		return () => {
+			if (attrs.innerHTML || attrs.textContent) {
+				return h(tag.value, {
+					role: isRealHeading ? null : 'heading',
+					'aria-level': isRealHeading ? null : level.value,
+					...attrs,
+				});
+			}
+			return h(tag.value, {
+				role: isRealHeading ? null : 'heading',
+				'aria-level': isRealHeading ? null : level.value,
+				...attrs,
+			}, slots.default?.());
+		};
 	},
 };
 </script>
