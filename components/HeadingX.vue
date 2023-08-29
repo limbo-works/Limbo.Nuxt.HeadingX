@@ -1,6 +1,12 @@
 <script>
 export default {
 	name: 'HeadingX',
+	inject: {
+		headingScopeLevel: {
+			default: 1,
+		},
+	},
+	inheritAttrs: false,
 	props: {
 		tag: {
 			type: String,
@@ -19,48 +25,48 @@ export default {
 			default: undefined,
 		},
 	},
-	render() {
-		const headingScopeLevel = inject('headingScopeLevel', 1);
-
-		const level = computed(() => {
+	computed: {
+		computedLevel() {
 			if (this.level || typeof this.level === 'number') {
 				// Add one to headingScopeLevel
 				if (typeof this.level === 'string' && this.level.startsWith('+')) {
-					return Number(this.level.substr(1)) + headingScopeLevel;
+					return Number(this.level.substr(1)) + this.headingScopeLevel;
 				}
 				// Subtract one from headingScopeLevel
 				if (typeof this.level === 'string' && this.level.startsWith('-')) {
-					return headingScopeLevel - Number(this.level.substr(1));
+					return this.headingScopeLevel - Number(this.level.substr(1));
 				}
 				// Plain level
 				return Number(this.level);
 			}
-			return headingScopeLevel;
-		});
-		const tag = computed(() => {
+			return this.headingScopeLevel;
+		},
+		computedTag() {
 			if (this.tag) {
 				return this.tag;
 			}
-			if (level.value >= 1 && level.value <= 6) {
-				return `h${level.value}`;
+			if (this.computedLevel >= 1 && this.computedLevel <= 6) {
+				return `h${this.computedLevel}`;
 			}
 			return 'div';
-		});
-
-		const isRealHeading = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(tag.value);
-
+		},
+		isRealHeading() {
+			return ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(this.computedTag);
+		},
+	},
+	render() {
 		if (this.html || this.text) {
-			return h(tag.value, {
-				role: isRealHeading ? null : 'heading',
-				'aria-level': isRealHeading ? null : level.value,
+			return h(this.computedTag, {
+				role: this.isRealHeading ? null : 'heading',
+				'aria-level': this.isRealHeading ? null : this.computedLevel,
 				...this.$attrs,
 				innerHTML: this.html,
 				textContent: this.text,
 			});
 		}
-		return h(tag.value, {
-			role: isRealHeading ? null : 'heading',
-			'aria-level': isRealHeading ? null : level.value,
+		return h(this.computedTag, {
+			role: this.isRealHeading ? null : 'heading',
+			'aria-level': this.isRealHeading ? null : this.computedLevel,
 			...this.$attrs,
 		}, this.$slots.default?.());
 	},
