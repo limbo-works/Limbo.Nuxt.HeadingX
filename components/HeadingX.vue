@@ -60,14 +60,11 @@ export default {
 	},
 	render() {
 		if (this.$attrs.innerHTML || this.$attrs.innerText) {
-			return h(
-				this.computedTag,
-				{
-					role: this.isRealHeading ? null : 'heading',
-					'aria-level': this.isRealHeading ? null : this.computedLevel,
-					...this.$attrs,
-				},
-			);
+			return h(this.computedTag, {
+				role: this.isRealHeading ? null : 'heading',
+				'aria-level': this.isRealHeading ? null : this.computedLevel,
+				...this.$attrs,
+			});
 		}
 		return h(
 			this.computedTag,

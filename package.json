@@ -2,7 +2,7 @@
 	"name": "@limbo-works/heading-x",
 	"type": "module",
 	"version": "0.0.17",
-	"main": "./nuxt.config.js",
+	"main": "./nuxt.config.ts",
 	"scripts": {
 		"dev": "nuxi dev .playground",
 		"build": "nuxt build .playground",
@@ -14,7 +14,9 @@
 		"test": "exit 0"
 	},
 	"devDependencies": {
-		"@limbo-works/lint-configs": "^1.0.2",
-		"nuxt": "^3.7.0"
+		"@limbo-works/lint-configs": "^2.1.0",
+		"jsdom": "^29.0.2",
+		"nuxt": "^4",
+		"vitest": "^4.1.2"
 	}
 }
